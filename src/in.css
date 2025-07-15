@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 200 700;
+    font-display: swap;
+    src: url("/content/roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: Roboto-Bold;
+    font-style: bold;
+    font-weight: 700;
+    font-display: swap;
+    src: url("/content/roboto/Roboto-Bold.ttf");
+}
+
+@theme {
+    --font-display: "Roboto"
+    --font-bold: "Roboto-Bold"
+    --color-primary: #2B5AA0;
+    --color-ligther-black: #1A1A1A;
+    --color-bg: #FFFFFF
+
+}

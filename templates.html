@@ -1,0 +1,20 @@
+<template id="product">
+    <div v-scope="{hovered: false}" class="bg-white rounded-2xl shadow-md p-6 flex flex-row items-center text-center
+           select-none transition-transform duration-700 ease-in-out transform" @mouseenter="hovered = true"
+        @mouseleave="hovered = false" :class="{'scale-125 z-50 shadow-2xl opacity-100': hovered, 'z-0 opacity-40': !hovered}">
+        <div class="flex flex-col w-full h-full" :class="{'w-1/2': hovered}">
+            <img :src="image_path" :alt="image_alt"
+                class="w-full h-64 object-cover rounded-lg mb-4 pointer-events-none">
+            <h2 class="text-xl font-semibold text-neutral-800 mb-1">{{ name }}</h2>
+            <p class="text-sm text-neutral-700 mb-4">
+                {{ description }}
+            </p>
+        </div>
+        <div id="hovered" v-if="hovered" class="pl-6 text-left w-1/2 text-sm text-neutral-600 transition-all">
+            <p><strong>Especificações</strong></p>
+            <li>Densidade: 1.04 g/cm³</li>
+            <li>Cor: {{ name.includes('Branco') ? 'Branca' : name.includes('Preto') ? 'Preta' : 'Transparente' }}</li>
+            <li>Aplicação: Indústria plástica</li>
+        </div>
+    </div>
+</template>

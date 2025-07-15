@@ -1,0 +1,20 @@
+[
+    {
+        "name": "ABS Branco", 
+        "description": "Granulado ABS na cor branca para aplicações industriais", 
+        "image_path": "content/pellet.avif", 
+        "image_alt": "Granulado ABS na cor branca"
+    },
+    { 
+        "name": "ABS Preto", 
+        "description": "Granulado ABS na cor preta para aplicações industriais", 
+        "image_path": "content/abs-preto.avif", 
+        "image_alt": "Granulado ABS na cor preta"
+    },
+    { 
+        "name": "PVC Cristal", 
+        "description": "PVC transparente de alta pureza", 
+        "image_path": "content/vinil.avif", 
+        "image_alt": "PVC cristal de alta pureza"
+    }
+]
