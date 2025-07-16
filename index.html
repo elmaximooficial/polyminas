@@ -34,6 +34,10 @@
     <link rel="stylesheet" href="src/index.css">
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+
+
 
     <!-- <link rel="preload" href="/fonts/main-font.woff2" as="font" type="font/woff2" crossorigin> -->
     <script type="application/ld+json">
@@ -93,13 +97,12 @@
 
 <body>
     <template id="product">
-        <div class="grow bg-white rounded-2xl p-6 flex flex-row items-start shadow-md shadow-ble-900
-            select-none transition-all duration-500 ease-in-out mx-auto origin-center transform z-0 relative overflow-hidden"
-            @mouseenter="hovered = true" @mouseleave="hovered = false"
-            :class="{'scale-105 z-10 drop-shadow-[0_15px_20px_rgba(0,0,0,0.5)] -translate-x-1/6 opacity-100': hovered, 'opacity-75': !hovered}"
-            :style="hovered ? 'width: 700px': 'width: 100%'">
+        <div class="grow mt-10 bg-white rounded-2xl p-6 flex xl:flex-row flex-col items-start shadow-md
+            select-none transition-all duration-500 ease-in-out mx-auto origin-center transform z-0 relative"
+            :class="{'scale-105 z-10 drop-shadow-[0_15px_20px_rgba(0,0,0,0.5)] -translate-x-1/6 opacity-100': state.glide.index === i, 'opacity-75': state.currentIndex !== i}"
+            :style="state.currentIndex === i ? 'width: 150%': 'width: 100%'">
 
-            <div class="flex flex-col shrink-0 mx-auto w-auto h-96 items-center text-center">
+            <div class="flex flex-col shrink-0 mx-0 w-auto h-96 items-center text-center">
                 <img :src="image_path" :alt="image_alt" class="object-cover h-80 rounded-lg mb-4 pointer-events-none">
                 <h2 class="text-xl font-semibold text-neutral-800 mb-1">{{ name }}</h2>
                 <p class="text-sm text-neutral-700 mb-4">
@@ -109,8 +112,8 @@
 
             <div id="hovered" class="right-0 h-auto mt-4 items-end">
                 <div class="p-4 text-left text-sm text-neutral-800
-                        transition-all duration- ease-in-out transform"
-                    :class="hovered ? 'duration-1000 opacity-100 translate-y-0' : 'duration-150 opacity-0 -translate-y-full'"">
+                        transition-all ease-in-out transform"
+                    :class="state.currentIndex === i ? 'duration-1000 opacity-100 translate-y-0' : 'duration-150 opacity-0 -translate-y-full'"">
                     <p><strong>Especificações</strong></p>
                     <li>Densidade: 1.04 g/cm³</li>
                     <li>Cor: {{ name.includes('Branco') ? 'Branca' : name.includes('Preto') ? 'Preta' : 'Transparente'
@@ -120,163 +123,184 @@
             </div>
         </div>
     </template>
-    <div id="content" class="grid-cols-4 grid-rows-12">
-        <header class="bg-white shadow-md sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-24">
+    <div id=" content" class="grid-cols-4 grid-rows-12">
+                    <header class="bg-white shadow-md sticky top-0 z-50">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="flex justify-between items-center h-24">
 
-                    <div class="flex-shrink-0">
-                        <a href="/">
-                            <img class="h-20 w-auto" src="content/logo-full.webp" alt="Polyminas Logo">
-                        </a>
-                    </div>
-                    <nav class="hidden md:flex space-x-8 items-center">
-                        <a href="#cta"
-                            class="text-sm font-medium text-neutral-700 hover:text-blue-600 transition">Início</a>
-                        <a href="/products.html"
-                            class="text-sm font-medium text-neutral-700 hover:text-blue-600 transition">Produtos</a>
+                                <div class="flex-shrink-0">
+                                    <a href="/">
+                                        <img class="h-20 w-auto" src="content/logo-full.webp" alt="Polyminas Logo">
+                                    </a>
+                                </div>
+                                <nav class="hidden md:flex space-x-8 items-center">
+                                    <a href="#cta"
+                                        class="text-sm font-medium text-neutral-700 hover:text-blue-600 transition">Início</a>
+                                    <a href="/products.html"
+                                        class="text-sm font-medium text-neutral-700 hover:text-blue-600 transition">Produtos</a>
 
-                        <a href="mailto:contato@polyminas.com.br"
-                            class="ml-4 inline-block px-4 py-2 border border-blue-600 text-blue-600 rounded-lg text-sm hover:bg-blue-50 transition">
-                            Fale Conosco
-                        </a>
-                    </nav>
-                    <div class="md:hidden flex items-center">
-                        <button id="mobile-menu-button" class="text-neutral-700 hover:text-blue-600 focus:outline-none">
-                            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
+                                    <a href="mailto:contato@polyminas.com.br"
+                                        class="ml-4 inline-block px-4 py-2 border border-blue-600 text-blue-600 rounded-lg text-sm hover:bg-blue-50 transition">
+                                        Fale Conosco
+                                    </a>
+                                </nav>
+                                <div class="md:hidden flex items-center">
+                                    <button id="mobile-menu-button"
+                                        class="text-neutral-700 hover:text-blue-600 focus:outline-none">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M4 6h16M4 12h16M4 18h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+                            <a href="#cta" class="block py-2 text-sm text-neutral-700 hover:text-blue-600">Início</a>
+                            <a href="/products.html"
+                                class="block py-2 text-sm text-neutral-700 hover:text-blue-600">Produtos</a>
+
+                            <a href="mailto:contato@polyminas.com.br"
+                                class="block mt-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg text-sm text-center hover:bg-blue-50">
+                                Fale Conosco
+                            </a>
+                        </div>
+
+                        <script>
+                            document.getElementById('mobile-menu-button').addEventListener('click', function () {
+                                const menu = document.getElementById('mobile-menu');
+                                menu.classList.toggle('hidden');
+                            });
+                        </script>
+                    </header>
+
+                    <div id="cta" class="col-span-4 row-span-5 row-start-1 bg-white rounded-2xl shadow-xl">
+                        <div id="header" class="mt-10 text-center mb-10">
+                            <h1 class="text-3xl md:text-4xl font-extrabold text-neutral-800 leading-tight">
+                                Polímeros Técnicos, Sob Medida Para Sua Indústria
+                            </h1>
+                            <p class="mt-4 text-lg text-neutral-600 max-w-2xl mx-auto">
+                                Polímeros desenvolvidos para moldagem industrial com precisão e performance.
+                            </p>
+                        </div>
+
+
+                        <!-- Best Seller Products-->
+
+                        <div id="best-sellers" class="py-10 w-screen mx-0 px-0 left-0 lg:h-[650px] h-[900px]">
+                            <div class="glide h-full w-full overflow-visible">
+                                <div class="glide__track w-full h-full overflow-visible" data-glide-el="track">
+                                    <ul class="glide__slides w-full h-full overflow-visible">
+                                        <li class="glide__slide w-full h-full overflow-visible"
+                                            v-for="(product, i) in state.products" v-scope="product"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <div id="about"
+                        class="col-span-1 col-start-2 row-span-5 row-start-5 p-8 bg-white rounded-2xl shadow-xl">
+                        <div id="header" class="text-center mb-10">
+                            <h1 class="text-3xl md:text-4xl font-extrabold text-neutral-800 leading-tight">
+                                Sobre a Nossa Empresa
+                            </h1>
+                            <p class="mt-4 text-lg text-neutral-600 max-w-2xl mx-auto">
+                                Desde 22 de fevereiro de 2024, oferecendo soluções de plásticos granulados
+                            </p>
+                        </div>
+                        <div id="content" class="gap-10 grid-rows-[auto,1fr] grid grid-cols-3">
+                            <div id="about-cards"
+                                class="items-center flex flex-col md:flex-row col-span-3 row-span-1 mx-auto">
+                                <div
+                                    class="rounded-xl shadow-md m-4 flex flex-col p-2 w-full md:w-1/3 h-full items-center text-center">
+                                    <div class="mb-2 text-blue-600 ">
+                                        <i data-lucide="eye" class="w-8 h-8"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Visão</h2>
+                                    </div>
+                                    <div>
+                                        <p class="text-md text-neutral-700 mb-4 px-10 ">Ser líder regional no
+                                            fornecimento de
+                                            plásticos granulados, com excelência e inovação.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl shadow-md m-4 p-2 w-full md:w-1/3 h-full flex flex-col items-center text-center">
+                                    <div class="mb-2 text-blue-600 ">
+                                        <i data-lucide="target" class="w-8 h-8"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Missão</h2>
+                                    </div>
+                                    <div>
+                                        <p class="text-md text-neutral-700 mb-4 px-10">Fornecer soluções inovadoras e de
+                                            alta
+                                            qualidade no mercado de plásticos granulados.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="rounded-xl shadow-md m-4 p-2 flex flex-col items-center w-full md:w-1/3 h-full">
+                                    <div class="mb-2 text-blue-600 ">
+                                        <i data-lucide="heart" class="w-8 h-8"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Valores</h2>
+                                    </div>
+                                    <div class="text-md text-neutral-700 mb-4 px-10">
+                                        <ul class="list-none space-y-2">
+                                            <li
+                                                class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
+                                                Integridade</li>
+                                            <li
+                                                class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
+                                                Inovação</li>
+                                            <li
+                                                class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
+                                                Qualidade</li>
+                                            <li
+                                                class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
+                                                Responsabilidade Ambiental</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="body"
+                                class="text-neutral-800 mx-auto flex flex-col md:flex-row row-start-2 col-span-3">
+                                <iframe width="100%" height="450" style="border:0" loading="lazy" allowfullscreen
+                                    referrerpolicy="no-referrer-when-downgrade" class="rounded-2xl"
+                                    title="Localização da Polyminas"
+                                    src="https://maps.google.com/maps?q=Rua%20Ant%C3%B4nio%20Sim%C3%A3o%20Mauad%2C%20300%20Itajub%C3%A1%2C%20MG&hl=pt-BR&z=15&output=embed">
+                                </iframe>
+                                <p class="m-4">
+                                    Somos especialistas no fornecimento de resinas plásticas em grânulos, garantindo
+                                    máxima
+                                    performance e confiabilidade. Atendemos às demandas de nossos clientes com agilidade
+                                    e precisão,
+                                    pautados pela excelência operacional e pelo compromisso contínuo com a
+                                    sustentabilidade.
+                                    <br /><br />
+                                    Nossa missão é oferecer soluções inovadoras em plásticos granulados, aliando
+                                    tecnologia de ponta
+                                    e rigorosos padrões de qualidade. Trabalhamos para superar expectativas, promovendo
+                                    parcerias
+                                    duradouras e criando valor real para cada projeto.
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
-                <a href="#cta" class="block py-2 text-sm text-neutral-700 hover:text-blue-600">Início</a>
-                <a href="/products.html" class="block py-2 text-sm text-neutral-700 hover:text-blue-600">Produtos</a>
-
-                <a href="mailto:contato@polyminas.com.br"
-                    class="block mt-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg text-sm text-center hover:bg-blue-50">
-                    Fale Conosco
-                </a>
-            </div>
-
-            <script>
-                document.getElementById('mobile-menu-button').addEventListener('click', function () {
-                    const menu = document.getElementById('mobile-menu');
-                    menu.classList.toggle('hidden');
-                });
-            </script>
-        </header>
-
-        <div id="cta" class="col-span-2 col-start-2 row-span-5 row-start-1 p-8 bg-white rounded-2xl shadow-xl">
-            <div id="header" class="text-center mb-10">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-neutral-800 leading-tight">
-                    Polímeros Técnicos, Sob Medida Para Sua Indústria
-                </h1>
-                <p class="mt-4 text-lg text-neutral-600 max-w-2xl mx-auto">
-                    Polímeros desenvolvidos para moldagem industrial com precisão e performance.
-                </p>
-            </div>
-
-
-            <!-- Best Seller Products-->
-
-            <div id="best-sellers" class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10" v-scope="state">
-                <template v-for="product in products">
-                    <div v-scope="{ $template: '#product', hovered: false, ...product }"></div>
-                </template>
-            </div>
-        </div>
-
-        <div id="about" class="col-span-1 col-start-2 row-span-5 row-start-5 p-8 bg-white rounded-2xl shadow-xl">
-            <div id="header" class="text-center mb-10">
-                <h1 class="text-3xl md:text-4xl font-extrabold text-neutral-800 leading-tight">
-                    Sobre a Nossa Empresa
-                </h1>
-                <p class="mt-4 text-lg text-neutral-600 max-w-2xl mx-auto">
-                    Desde 22 de fevereiro de 2024, oferecendo soluções de plásticos granulados
-                </p>
-            </div>
-            <div id="content" class="gap-10 grid-rows-[auto,1fr] grid grid-cols-3">
-                <div id="about-cards" class="items-center flex flex-col md:flex-row col-span-3 row-span-1 mx-auto">
-                    <div
-                        class="rounded-xl shadow-md m-4 flex flex-col p-2 w-full md:w-1/3 h-full items-center text-center">
-                        <div class="mb-2 text-blue-600 ">
-                            <i data-lucide="eye" class="w-8 h-8"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Visão</h2>
-                        </div>
-                        <div>
-                            <p class="text-md text-neutral-700 mb-4 px-10 ">Ser líder regional no fornecimento de
-                                plásticos granulados, com excelência e inovação.</p>
-                        </div>
-                    </div>
-                    <div
-                        class="rounded-xl shadow-md m-4 p-2 w-full md:w-1/3 h-full flex flex-col items-center text-center">
-                        <div class="mb-2 text-blue-600 ">
-                            <i data-lucide="target" class="w-8 h-8"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Missão</h2>
-                        </div>
-                        <div>
-                            <p class="text-md text-neutral-700 mb-4 px-10">Fornecer soluções inovadoras e de alta
-                                qualidade no mercado de plásticos granulados.</p>
-                        </div>
-                    </div>
-                    <div class="rounded-xl shadow-md m-4 p-2 flex flex-col items-center w-full md:w-1/3 h-full">
-                        <div class="mb-2 text-blue-600 ">
-                            <i data-lucide="heart" class="w-8 h-8"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-center text-xl font-semibold text-neutral-800 mb-1">Valores</h2>
-                        </div>
-                        <div class="text-md text-neutral-700 mb-4 px-10">
-                            <ul class="list-none space-y-2">
-                                <li
-                                    class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
-                                    Integridade</li>
-                                <li
-                                    class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
-                                    Inovação</li>
-                                <li
-                                    class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
-                                    Qualidade</li>
-                                <li
-                                    class="relative pl-6 before:content-['✔︎'] before:absolute before:left-0 before:text-emerald-500">
-                                    Responsabilidade Ambiental</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div id="body" class="text-neutral-800 mx-auto flex flex-col md:flex-row row-start-2 col-span-3">
-                    <iframe width="100%" height="450" style="border:0" loading="lazy" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade" class="rounded-2xl" title="Localização da Polyminas"
-                        src="https://maps.google.com/maps?q=Rua%20Ant%C3%B4nio%20Sim%C3%A3o%20Mauad%2C%20300%20Itajub%C3%A1%2C%20MG&hl=pt-BR&z=15&output=embed">
-                    </iframe>
-                    <p class="m-4">
-                        Somos especialistas no fornecimento de resinas plásticas em grânulos, garantindo máxima
-                        performance e confiabilidade. Atendemos às demandas de nossos clientes com agilidade e precisão,
-                        pautados pela excelência operacional e pelo compromisso contínuo com a sustentabilidade.
-                        <br /><br />
-                        Nossa missão é oferecer soluções inovadoras em plásticos granulados, aliando tecnologia de ponta
-                        e rigorosos padrões de qualidade. Trabalhamos para superar expectativas, promovendo parcerias
-                        duradouras e criando valor real para cada projeto.
-
-                    </p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div id="footer"></div>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script>
-        lucide.createIcons();
-    </script>
-    <script src="https://unpkg.com/petite-vue" defer></script>
-    <script type="module" src="src/components.js" defer></script>
+                <div id="footer"></div>
+                <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+                <script>
+                    lucide.createIcons();
+                </script>
+                <script src="https://unpkg.com/petite-vue" defer></script>
+                <script type="module" src="src/components.js" defer></script>
 </body>
 
 </html>
